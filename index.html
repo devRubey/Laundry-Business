@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eugene’s Laundry - Professional Laundry & Dry Cleaning</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'laundry-blue': '#1e40af',
+            'laundry-light': '#3b82f6',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
+
+  <!-- AOS Animate on Scroll CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+    
+    .typewriter-font {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3),
+                  0 4px 6px -2px rgba(59, 130, 246, 0.2);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .hero-bg.active {
+      opacity: 1;
+    }
+
+    /* .dark .hero-bg {
+      background-image: linear-gradient(rgba(40, 40, 40, 0.25), rgba(40, 40, 40, 0.25)) !important;
+    } */
+
+    .typewriter {
+      overflow: hidden;
+      white-space: wrap;
+      margin: 0 auto;
+      letter-spacing: .05em;
+      opacity: 0;
+      animation: fadeIn 2s ease-in forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .typewriter-text {
+      border-right: 2px solid #3b82f6;
+      animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+      overflow: hidden;
+      white-space: wrap;
+      display: inline-block;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #3b82f6; }
+    }
+    
+    .testimonial-card {
+      transition: all 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    
+    .hero-text-container {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .dark .hero-text-container {
+      background: rgba(30, 41, 119, 0.85);
+    }
+    
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .price-table th, .price-table td {
+      padding: 15px 20px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .price-table th {
+      background-color: #f3f4f6;
+      font-weight: 600;
+    }
+    
+    .dark .price-table th {
+      background-color: #374151;
+    }
+    
+    .dark .price-table td {
+      border-color: #4b5563;
+    }
+    
+    .price-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .testimonial-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #3b82f6;
+    }
+    
+    /* FAQ Styling */
+    .faq-item {
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .dark .faq-item {
+      border-color: #4b5563;
+    }
+    
+    .faq-question {
+      padding: 1.5rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: between;
+      align-items: center;
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .faq-answer.active {
+      max-height: 10000px;
+    }
+    
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    
+    .modal-img {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+    }
+    
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
+    
+    .prev {
+      left: 30px;
+    }
+    
+    .next {
+      right: 30px;
+    }
+
+    /* Pricing dropdown styling */
+    .pricing-category {
+      margin-bottom: 2rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .dark .pricing-category {
+      border-color: #4b5563;
+    }
+    
+    .pricing-header {
+      background-color: #3b82f6;
+      color: white;
+      padding: 1.2rem 1.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .dark .pricing-header {
+      background-color: #1e40af;
+    }
+    
+    .pricing-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .pricing-content.active {
+      max-height: 2000px;
+    }
+    
+    /* Demarcation line */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #3b82f6, transparent);
+      margin: 4rem auto;
+      width: 80%;
+    }
+    
+    .dark .section-divider {
+      background: linear-gradient(to right, transparent, #60a5fa, transparent);
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Pricing item styling */
+    .pricing-item {
+      padding: 2rem 2rem;
+      transition: background-color 0.2s;
+    }
+    
+    .pricing-item:hover {
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+    
+    .dark .pricing-item:hover {
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+    
+    .pricing-desc {
+      font-family: 'Inter', sans-serif;
+      margin-top: 0.5rem;
+      color: #6b7280;
+    }
+    
+    .dark .pricing-desc {
+      color: #d1d5db;
+    }
+
+    /* Overlay for hero section */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18));
+    }
+
+    .dark .hero-overlay {
+      background: linear-gradient(rgba(0,0,0,0.32), rgba(0,0,0,0.32));
+    }
+
+    /* About Section with faint logo background */
+    .section-with-logo-bg {
+      position: relative;
+      background: none;
+      z-index: 1;
+    }
+    .section-with-logo-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('Eugene\'s Laundry Logo.png') no-repeat center center;
+      background-size: 320px 320px;
+      opacity: 0.07; /* Faint logo */
+      pointer-events: none;
+      z-index: 0;
+    }
+    .section-with-logo-bg > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Pricing Section with faint logo background */
+    .pricing-logo-bg {
+      position: relative;
+      background: none;
+      z-index: 1;
+    }
+    .pricing-logo-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('Eugene\'s Laundry Logo.png') no-repeat center center;
+      background-size: 320px 320px;
+      opacity: 0.07; /* Faint logo */
+      pointer-events: none;
+      z-index: 0;
+    }
+    .pricing-logo-bg > * {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-blue-900 dark:text-gray-100 transition-colors duration-500">
+
+  <!-- Dark Mode Toggle -->
+  <button id="dark-toggle" aria-label="Toggle dark mode"
+    class="fixed top-4 right-4 z-50 bg-blue-600 text-white p-2 rounded-md shadow-md hover:bg-blue-700">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Navbar -->
+  <nav class="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white dark:bg-blue-800 sticky top-0 z-40">
+    <a href="#" class="flex items-center gap-2 text-2xl font-bold text-blue-600 dark:text-blue-200">
+      <img src="Eugene's Laundry Logo.png" alt="Logo" width="36" height="36" class="rounded" />
+      Eugene’s Laundry
+    </a>
+    <ul class="hidden md:flex space-x-8 font-semibold">
+      <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-300">Home</a></li>
+      <li><a href="#services" class="hover:text-blue-600 dark:hover:text-blue-300">Services</a></li>
+      <li><a href="#pricing" class="hover:text-blue-600 dark:hover:text-blue-300">Pricing</a></li>
+      <li><a href="#how-it-works" class="hover:text-blue-600 dark:hover:text-blue-300">How It Works</a></li>
+      <li><a href="#about" class="hover:text-blue-600 dark:hover:text-blue-300">About</a></li>
+      <li><a href="#gallery" class="hover:text-blue-600 dark:hover:text-blue-300">Gallery</a></li>
+      <li><a href="#testimonials" class="hover:text-blue-600 dark:hover:text-blue-300">Testimonials</a></li>
+    </ul>
+    <a href="https://wa.me/2347076667878" class="hidden md:inline-flex items-center bg-green-500 text-white px-5 py-2 rounded-md font-semibold shadow hover:bg-green-600">
+      <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
+    </a>
+  </nav>
+
+  <!-- Hero with laundry image background transition -->
+  <section class="relative overflow-hidden min-h-[70vh] flex items-center">
+    <div class="hero-bg active" id="hero-bg-1" style="background-image: url('Background1.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-2" style="background-image: url('Background2.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-3" style="background-image: url('Background3.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-4" style="background-image: url('Background4.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-5" style="background-image: url('Background5.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-6" style="background-image: url('Background6.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-7" style="background-image: url('Background7.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-8" style="background-image: url('Background8.jpg');"></div>
+    <div class="hero-bg" id="hero-bg-9" style="background-image: url('Background9.jpg');"></div>
+    <!-- Overlay for both modes -->
+    <div class="hero-overlay"></div>
+    <div class="max-w-7xl mx-auto px-6 py-20 text-center relative z-10" data-aos="fade-up">
+      <div class="hero-text-container">
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 text-blue-600 dark:text-blue-200">
+          Laundry Made Simple, Fresh & Affordable
+        </h1>
+        <p class="max-w-xl mx-auto text-gray-800 dark:text-gray-100 mb-8 text-lg font-medium">
+          At Eugene’s Laundry, we make laundry hassle-free with expert care, reliable delivery, and pocket-friendly prices.
+        </p>
+        <a href="https://wa.me/2347076667878" class="inline-flex items-center bg-green-500 text-white px-8 py-3 rounded-md font-semibold shadow-md hover:bg-green-600">
+          <i class="fab fa-whatsapp mr-2"></i> Chat on WhatsApp
+        </a>
+        <p class="mt-4 text-sm text-gray-700 dark:text-gray-300 font-semibold bg-blue-50 dark:bg-blue-700 py-2 px-4 rounded-md inline-block">
+          <i class="fas fa-clock mr-2"></i>Open: Monday - Saturday, 8:30am - 6:30pm
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section with faint logo background -->
+  <section id="about" class="section-with-logo-bg py-16 px-6 bg-gray-50 dark:bg-blue-800" data-aos="fade-up">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-3xl font-extrabold mb-6">About Eugene's Laundry</h2>
+      <div class="typewriter-container mb-6">
+        <p class="typewriter text-gray-700 dark:text-gray-300 max-w-3xl mx-auto text-lg typewriter-font">
+          <span class="typewriter-text">Founded with a passion for quality service, Eugene's Laundry is dedicated to making laundry stress-free for families and professionals across Lagos.</span>
+        </p>
+      </div>
+      <p class="text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mt-6">
+        Our mission is simple: provide reliable, affordable, and timely laundry care so you can focus on what truly matters.
+      </p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Services -->
+  <section id="services" class="bg-white dark:bg-blue-900 py-16 px-6" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto text-center mb-12">
+      <h2 class="text-3xl font-extrabold">Our Services</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto">
+      <div class="card bg-white dark:bg-blue-700 rounded-lg p-6 shadow-sm">
+        <i class="fas fa-shirt text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="font-semibold text-lg">Wash & Fold</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Everyday laundry, washed, folded, and ready to wear.</p>
+      </div>
+      <div class="card bg-white dark:bg-blue-700 rounded-lg p-6 shadow-sm">
+        <i class="fas fa-burn text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="font-semibold text-lg">Dry Cleaning</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Delicate care for suits, gowns, and special fabrics.</p>
+      </div>
+      <div class="card bg-white dark:bg-blue-700 rounded-lg p-6 shadow-sm">
+        <i class="fas fa-star text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="font-semibold text-lg">Premium Ironing</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Sharp, neat ironing for a crisp and confident look.</p>
+      </div>
+      <div class="card bg-white dark:bg-blue-700 rounded-lg p-6 shadow-sm">
+        <i class="fas fa-truck text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="font-semibold text-lg">Pickup & Delivery</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Doorstep convenience — we come to you, always on time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-16 px-6 max-w-7xl mx-auto bg-gray-50 dark:bg-blue-800" data-aos="fade-up">
+    <h2 class="text-3xl font-extrabold text-center mb-12">How It Works</h2>
+    <div class="flex flex-col md:flex-row gap-8 justify-between">
+      <div class="flex-1 bg-white dark:bg-blue-700 rounded-lg p-8 text-center shadow">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold mb-4">1</div>
+        <i class="fas fa-calendar-alt text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold">Schedule</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Pick a time that works for you.</p>
+      </div>
+      <div class="flex-1 bg-white dark:bg-blue-700 rounded-lg p-8 text-center shadow">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold mb-4">2</div>
+        <i class="fas fa-soap text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold">We Clean</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Clothes washed, ironed, or dry-cleaned professionally.</p>
+      </div>
+      <div class="flex-1 bg-white dark:bg-blue-700 rounded-lg p-8 text-center shadow">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold mb-4">3</div>
+        <i class="fas fa-truck text-blue-600 dark:text-blue-200 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold">Delivery</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Fresh clothes back at your doorstep.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section with dropdown categories -->
+  <section id="pricing" class="pricing-logo-bg bg-white dark:bg-blue-900 py-16 px-6" data-aos="fade-up">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-extrabold text-center mb-12">Our Pricing</h2>
+      
+      <!-- Regular Services Category -->
+      <div class="pricing-category mb-8">
+        <div class="pricing-header" onclick="togglePricingCategory(this)">
+          <h3 class="text-xl font-semibold">Regular Services</h3>
+          <i class="fas fa-chevron-down transition-transform"></i>
+        </div>
+        <div class="pricing-content">
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Complete Bed sheet & duvet (2-4) Pillowcase & Bed sheet</span>
+              <span class="ml-auto font-bold">₦5,000</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Full set of bed linens including duvet cover, bedsheet, and pillowcases.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Native Attire</span>
+              <span class="ml-auto font-bold">₦1,500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Traditional Nigerian clothing including Agbada, Kaftan, or other native wear.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Gownlike garment (Jalmia, Sutana, Gowns)</span>
+              <span class="ml-auto font-bold">₦1,500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Formal gowns, jalabiyas, and other long garments.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Towels (Big)</span>
+              <span class="ml-auto font-bold">₦1,000</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Bath towels and larger towel varieties.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Towels (Small)</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Hand towels, face towels, and smaller towel varieties.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Polo Shirt (Round neck)</span>
+              <span class="ml-auto font-bold">₦700</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Polo shirts with round neck design.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Shorts</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">All types of shorts.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">T-shirt Starch & Iron</span>
+              <span class="ml-auto font-bold">₦800</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">T-shirts with starch and professional ironing.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Caps</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Cleaning and shaping of caps.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Jean Trouser</span>
+              <span class="ml-auto font-bold">₦1,000</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Denim trousers and jeans.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Joggers & Pant Trouser</span>
+              <span class="ml-auto font-bold">₦800</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Joggers and various types of trousers.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Duvet only</span>
+              <span class="ml-auto font-bold">₦2,500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Cleaning of duvet only.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Bed sheet & Pillow case only</span>
+              <span class="ml-auto font-bold">₦2,500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Bed sheets and pillow cases only.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Sweaters/Hoodie/Jacket</span>
+              <span class="ml-auto font-bold">₦1,000</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">All types of sweaters, hoodies, and jackets.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Skirt & Blouse</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Skirts and blouses.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Complete Suit</span>
+              <span class="ml-auto font-bold">₦4,000</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Complete suit cleaning.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Shoes (Sneakers)</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Sneaker cleaning service.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Throw Pillow</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Decorative throw pillows.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Iron Only Services Category -->
+      <div class="pricing-category">
+        <div class="pricing-header" onclick="togglePricingCategory(this)">
+          <h3 class="text-xl font-semibold">Iron Only Services</h3>
+          <i class="fas fa-chevron-down transition-transform"></i>
+        </div>
+        <div class="pricing-content">
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Polo Shirts</span>
+              <span class="ml-auto font-bold">₦300</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Professional ironing of polo shirts.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Native Attire</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Ironing of traditional Nigerian clothing.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">T-shirts</span>
+              <span class="ml-auto font-bold">₦400</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Professional ironing of t-shirts.</p>
+            </div>
+          </div>
+          
+          <div class="pricing-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span class="font-medium">Other Garments</span>
+              <span class="ml-auto font-bold">₦500</span>
+              <i class="fas fa-chevron-down ml-4 transition-transform"></i>
+            </div>
+            <div class="faq-answer">
+              <p class="pb-4 pricing-desc">Ironing of various other clothing items.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="bg-gray-50 dark:bg-blue-800 py-16 px-6" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto text-center mb-12">
+      <h2 class="text-3xl font-extrabold">Our Gallery</h2>
+      <p class="text-gray-600 dark:text-gray-300 mt-2">A glimpse of our quality work and our workshop</p>
+    </div>
+    
+    <div class="gallery-grid max-w-7xl mx-auto">
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(0)">
+        <img src="Office.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(1)">
+        <img src="IMG-20250912-WA0021.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(2)">
+        <img src="Washing Machine.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(3)">
+        <img src="IMG-20250912-WA0027.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(4)">
+        <img src="pic.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(5)">
+        <img src="IMG-20250912-WA0029.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(6)">
+        <img src="IMG-20250912-WA0015.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+      <div class="rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg cursor-pointer" onclick="openModal(7)">
+        <img src="IMG-20250912-WA0013.jpg" alt="Laundry Work" class="w-full h-64 object-cover">
+      </div>
+    
+    </div>
+  </section>
+
+  <!-- Testimonials Section with Nigerian images -->
+  <section id="testimonials" class="bg-white dark:bg-blue-900 py-16 px-6" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto text-center mb-12">
+      <h2 class="text-3xl font-extrabold">Customer Testimonials</h2>
+      <p class="text-gray-600 dark:text-gray-300 mt-2">What our customers say about our services</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <!-- Testimonial 1 -->
+      <div class="testimonial-card bg-gray-50 dark:bg-blue-800 rounded-lg p-6 shadow">
+        <div class="flex items-center mb-4">
+          <img src="istockphoto-639466202-612x612.jpg" alt="Chinedu Okeke" class="testimonial-img mr-3">
+          <div>
+            <h4 class="font-semibold">Chinedu Okeke</h4>
+            <div class="flex text-yellow-400">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300">"Eugene's Laundry has been a lifesaver for my family! Their pickup and delivery service is always on time, and my clothes come back looking brand new. I especially appreciate how well they handle my traditional attire."</p>
+      </div>
+      
+      <!-- Testimonial 2 -->
+      <div class="testimonial-card bg-gray-50 dark:bg-blue-800 rounded-lg p-6 shadow">
+        <div class="flex items-center mb-4">
+          <img src="istockphoto-1671407049-612x612.jpg" alt="Adebayo Ojo" class="testimonial-img mr-3">
+          <div>
+            <h4 class="font-semibold">Adebayo Ojo</h4>
+            <div class="flex text-yellow-400">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300">"The premium ironing service is worth every penny. My work clothes always look professionally done. As a banker, presentation is everything, and Eugene's ensures I always look my best. Highly recommend!"</p>
+      </div>
+      
+      <!-- Testimonial 3 -->
+      <div class="testimonial-card bg-gray-50 dark:bg-blue-800 rounded-lg p-6 shadow">
+        <div class="flex items-center mb-4">
+          <img src="istockphoto-537173117-612x612.jpg" alt="Ngozi Eze" class="testimonial-img mr-3">
+          <div>
+            <h4 class="font-semibold">Ngozi Eze</h4>
+            <div class="flex text-yellow-400">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300">"I've tried several laundry services in Lagos, and Eugene's is by far the best. Their attention to detail with my children's school uniforms and my husband's work clothes is exceptional. The pricing is also very fair."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-gray-200 py-12 px-6 mt-16">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Company Info -->
+      <div class="md:col-span-2">
+        <a href="#" class="flex items-center gap-2 text-2xl font-bold text-white mb-4">
+          <img src="Eugene's Laundry Logo.png" alt="Logo" width="40" height="40" class="rounded" />
+          Eugene’s Laundry
+        </a>
+        <p class="mb-4 max-w-md">Professional laundry and dry cleaning services with free pickup and delivery across Lagos.</p>
+        <div class="flex gap-4">
+          <a href="https://www.tiktok.com/@eugenes.laundry" class="bg-black h-10 w-10 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="https://www.instagram.com/gene_laundry42" class="bg-pink-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://wa.me/2347076667878" class="bg-green-500 h-10 w-10 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-bold text-white text-lg mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#services" class="hover:text-blue-300 transition-colors">Services</a></li>
+          <li><a href="#pricing" class="hover:text-blue-300 transition-colors">Pricing</a></li>
+          <li><a href="#how-it-works" class="hover:text-blue-300 transition-colors">How It Works</a></li>
+          <li><a href="#gallery" class="hover:text-blue-300 transition-colors">Gallery</a></li>
+          <li><a href="#testimonials" class="hover:text-blue-300 transition-colors">Testimonials</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div>
+        <h3 class="font-bold text-white text-lg mb-4">Contact Us</h3>
+        <ul class="space-y-2">
+          <li class="flex items-start">
+            <i class="fas fa-map-marker-alt text-blue-300 mt-1 mr-3"></i>
+            <span>House 97 Shop 2 & 3, 2nd avenue Zone 4 Peace Estate Baruwa Fatade Road, Ipaja, Lagos.</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-phone-alt text-blue-300 mt-1 mr-3"></i>
+            <a href="tel:+2347077428925" class="hover:text-blue-300 transition-colors">0707 742 8925</a>
+          </li>
+          <li class="flex items-start">
+            <i class="fab fa-whatsapp text-blue-300 mt-1 mr-3"></i>
+            <a href="https://wa.me/2347076667878" class="hover:text-blue-300 transition-colors">0707 666 7878</a>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-clock text-blue-300 mt-1 mr-3"></i>
+            <span>Mon-Sat: 8:30am - 6:30pm</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Copyright -->
+    <div class="max-w-7xl mx-auto border-t border-blue-700 mt-8 pt-8 text-center text-sm">
+      <p>© 2025 Eugene’s Laundry. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Gallery Modal -->
+  <div id="gallery-modal" class="modal">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <span class="modal-nav prev" onclick="changeSlide(-1)">&#10094;</span>
+    <span class="modal-nav next" onclick="changeSlide(1)">&#10095;</span>
+    <div class="modal-content">
+      <img class="modal-img" id="modal-image" src="" alt="">
+    </div>
+  </div>
+
+  <!-- AOS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Initialize AOS so animation happens only once and stays visible
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        once: true,      // Animation happens only once and stays
+        duration: 600,
+        easing: 'ease-in-out',
+        offset: 40
+      });
+    });
+  </script>
+
+  <script>
+    // Gallery functionality
+    const galleryImages = [
+      "Office.jpg",
+      "IMG-20250912-WA0021.jpg",
+      "Washing Machine.jpg",
+      "IMG-20250912-WA0027.jpg",
+      "pic.jpg",
+      "IMG-20250912-WA0029.jpg",
+      "IMG-20250912-WA0015.jpg",
+      "IMG-20250912-WA0013.jpg"
+    ];
+    
+    let currentSlide = 0;
+    
+    function openModal(index) {
+      currentSlide = index;
+      document.getElementById('gallery-modal').style.display = 'flex';
+      document.getElementById('modal-image').src = galleryImages[currentSlide];
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+    
+    function closeModal() {
+      document.getElementById('gallery-modal').style.display = 'none';
+      document.body.style.overflow = 'auto'; // Enable scrolling
+    }
+    
+    function changeSlide(direction) {
+      currentSlide += direction;
+      
+      // Wrap around if at beginning or end
+      if (currentSlide < 0) {
+        currentSlide = galleryImages.length - 1;
+      } else if (currentSlide >= galleryImages.length) {
+        currentSlide = 0;
+      }
+      
+      document.getElementById('modal-image').src = galleryImages[currentSlide];
+    }
+    
+    // Close modal when clicking outside image
+    document.getElementById('gallery-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (document.getElementById('gallery-modal').style.display === 'flex') {
+        if (e.key === 'Escape') {
+          closeModal();
+        } else if (e.key === 'ArrowLeft') {
+          changeSlide(-1);
+        } else if (e.key === 'ArrowRight') {
+          changeSlide(1);
+        }
+      }
+    });
+    
+    // FAQ functionality
+    function toggleFaq(element) {
+      const answer = element.nextElementSibling;
+      const icon = element.querySelector('i');
+      
+      answer.classList.toggle('active');
+      icon.classList.toggle('fa-chevron-down');
+      icon.classList.toggle('fa-chevron-up');
+    }
+    
+    // Pricing category dropdown functionality
+    function togglePricingCategory(element) {
+      const content = element.nextElementSibling;
+      const icon = element.querySelector('i');
+      
+      content.classList.toggle('active');
+      icon.classList.toggle('fa-chevron-down');
+      icon.classList.toggle('fa-chevron-up');
+    }
+    
+    // Hero background image transition
+    let currentBg = 1;
+    const totalBgs = 9;
+    
+    function changeHeroBackground() {
+      // Hide current background
+      document.getElementById(`hero-bg-${currentBg}`).classList.remove('active');
+      
+      // Move to next background
+      currentBg = currentBg % totalBgs + 1;
+      
+      // Show next background
+      document.getElementById(`hero-bg-${currentBg}`).classList.add('active');
+    }
+    
+    // Start background rotation
+    setInterval(changeHeroBackground, 5000);
+    
+    // Dark Mode functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleBtn = document.getElementById("dark-toggle");
+      const htmlElement = document.documentElement;
+      
+      // Check for saved theme preference or use system preference
+      const savedTheme = localStorage.getItem("theme");
+      
+      if (savedTheme === "dark") {
+        htmlElement.classList.add("dark");
+        toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      } else if (savedTheme === "light") {
+        htmlElement.classList.remove("dark");
+        toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        // System preference is dark
+        htmlElement.classList.add("dark");
+        toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        localStorage.setItem("theme", "dark");
+      } else {
+        // Default to light mode
+        localStorage.setItem("theme", "light");
+      }
+      
+      // Toggle button functionality
+      toggleBtn.addEventListener("click", () => {
+        if (htmlElement.classList.contains("dark")) {
+          htmlElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+          toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+          htmlElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+          toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
